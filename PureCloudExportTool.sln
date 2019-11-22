@@ -3,7 +3,19 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PureCloudExportTool", "PureCloudExportTool\PureCloudExportTool.csproj", "{437F8331-25B2-461B-97C2-FB4EA8879DDF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PureCloudExportTool_Service", "PureCloudExportTool\PureCloudExportTool_Service.csproj", "{437F8331-25B2-461B-97C2-FB4EA8879DDF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PureCloudExportTool_Main", "PureCloudExportTool_Main\PureCloudExportTool_Main.csproj", "{616B3C62-F16A-4332-ACCF-7B6B97C77812}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestConsoleApplication", "TestConsoleApplication\TestConsoleApplication.csproj", "{1AC51BE6-02A7-4596-A942-9E2826AFFA5B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Plugins", "Plugins", "{6C48DE81-1C2B-422C-B0C2-18228FC40E85}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "pcet.plugin.sql", "pcet.plugin.sql\pcet.plugin.sql.csproj", "{46A85912-8162-48DA-B3B1-84821626A889}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "pcet.plugin.csv", "pcet.plugin.csv\pcet.plugin.csv.csproj", "{8B1D0A02-07BD-4B0C-8408-06E7AAF0916E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "pcet.plugins", "pcet.plugins\pcet.plugins.csproj", "{C6E154C2-FEE4-40D5-B030-27EE8FB53845}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,8 +27,33 @@ Global
 		{437F8331-25B2-461B-97C2-FB4EA8879DDF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{437F8331-25B2-461B-97C2-FB4EA8879DDF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{437F8331-25B2-461B-97C2-FB4EA8879DDF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{616B3C62-F16A-4332-ACCF-7B6B97C77812}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{616B3C62-F16A-4332-ACCF-7B6B97C77812}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{616B3C62-F16A-4332-ACCF-7B6B97C77812}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{616B3C62-F16A-4332-ACCF-7B6B97C77812}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1AC51BE6-02A7-4596-A942-9E2826AFFA5B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1AC51BE6-02A7-4596-A942-9E2826AFFA5B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1AC51BE6-02A7-4596-A942-9E2826AFFA5B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1AC51BE6-02A7-4596-A942-9E2826AFFA5B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{46A85912-8162-48DA-B3B1-84821626A889}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{46A85912-8162-48DA-B3B1-84821626A889}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{46A85912-8162-48DA-B3B1-84821626A889}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{46A85912-8162-48DA-B3B1-84821626A889}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8B1D0A02-07BD-4B0C-8408-06E7AAF0916E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8B1D0A02-07BD-4B0C-8408-06E7AAF0916E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8B1D0A02-07BD-4B0C-8408-06E7AAF0916E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8B1D0A02-07BD-4B0C-8408-06E7AAF0916E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C6E154C2-FEE4-40D5-B030-27EE8FB53845}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C6E154C2-FEE4-40D5-B030-27EE8FB53845}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C6E154C2-FEE4-40D5-B030-27EE8FB53845}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C6E154C2-FEE4-40D5-B030-27EE8FB53845}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{46A85912-8162-48DA-B3B1-84821626A889} = {6C48DE81-1C2B-422C-B0C2-18228FC40E85}
+		{8B1D0A02-07BD-4B0C-8408-06E7AAF0916E} = {6C48DE81-1C2B-422C-B0C2-18228FC40E85}
+		{C6E154C2-FEE4-40D5-B030-27EE8FB53845} = {6C48DE81-1C2B-422C-B0C2-18228FC40E85}
 	EndGlobalSection
 EndGlobal

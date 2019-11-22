@@ -1,6 +1,6 @@
 ﻿namespace PureCloudExportTool
 {
-    partial class Service1
+    partial class PureCloudExportTool_Service
     {
         /// <summary> 
         /// Required designer variable.
