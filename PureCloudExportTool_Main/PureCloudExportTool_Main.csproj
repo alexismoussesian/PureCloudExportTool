@@ -35,17 +35,19 @@
       <HintPath>..\packages\log4net.2.0.8\lib\net45-full\log4net.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\..\..\..\Users\Alexis.Moussesian.I3DOMAIN\Documents\Visual Studio 2015\Projects\platform-client-sdk-dotnet-master\build\bin\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="PureCloudPlatform.Client.V2">
-      <HintPath>..\..\platform-client-sdk-dotnet-master\build\bin\PureCloudPlatform.Client.V2.dll</HintPath>
+      <HintPath>..\..\..\..\Users\Alexis.Moussesian.I3DOMAIN\Documents\Visual Studio 2015\Projects\platform-client-sdk-dotnet-master\build\bin\49.0\PureCloudPlatform.Client.V2.dll</HintPath>
     </Reference>
     <Reference Include="RestSharp">
-      <HintPath>..\..\platform-client-sdk-dotnet-master\build\bin\RestSharp.dll</HintPath>
+      <HintPath>..\..\..\..\Users\Alexis.Moussesian.I3DOMAIN\Documents\Visual Studio 2015\Projects\platform-client-sdk-dotnet-master\build\bin\RestSharp.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
@@ -62,6 +64,16 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\pcet.plugin.sql\pcet.plugin.sql.csproj">
+      <Project>{46a85912-8162-48da-b3b1-84821626a889}</Project>
+      <Name>pcet.plugin.sql</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\pcet.plugins\pcet.plugins.csproj">
+      <Project>{c6e154c2-fee4-40d5-b030-27ee8fb53845}</Project>
+      <Name>pcet.plugins</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

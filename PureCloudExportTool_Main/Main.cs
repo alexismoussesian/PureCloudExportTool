@@ -1,13 +1,18 @@
 ﻿using log4net;
+using log4net.Config;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
+using System.Reflection;
 using System.Text;
-using System.Threading.Tasks;
+using Newtonsoft.Json;
+using PureCloudExportTool_Main.Model;
+using pcet.plugins;
 
 namespace PureCloudExportTool_Main
 {
-    public class Main
+    public static class Main
     {
         /// <summary>
         /// Plugins folder

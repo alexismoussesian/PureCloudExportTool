@@ -8,8 +8,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using pcet.Model;
-using pcet.Model;
+using PureCloudExportTool_Main.Model;
+
 
 
 namespace PureCloudExportTool_Main
