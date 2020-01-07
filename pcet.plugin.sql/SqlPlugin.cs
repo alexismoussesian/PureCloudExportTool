@@ -15,6 +15,7 @@ using pcet.plugin.sql.DataModel.GroupMember;
 using pcet.plugin.sql.DataModel.ConversationMetric;
 using pcet.plugin.sql.DataModel.DataTableRow;
 using pcet.plugins;
+using pcet.plugin.sql.DataModel.UserReference;
 
 namespace pcet.plugin.sql
 {
@@ -76,9 +77,9 @@ namespace pcet.plugin.sql
             // what to do here?
         }
 
-        public void InitializeDictionaries(Dictionary<string, string> queues, Dictionary<string, string> languages, Dictionary<string, string> skills, Dictionary<string, string> users, Dictionary<string, string> wrapUpCodes, Dictionary<string, string> edgeServers, Dictionary<string, string> campaigns, Dictionary<string, string> contactLists, Dictionary<string, string> presences, Dictionary<string, string> divisions, Dictionary<string, string> dataTables, Dictionary<string, string> groups)
+        public void InitializeDictionaries(Dictionary<string, string> queues, Dictionary<string, string> languages, Dictionary<string, string> skills, Dictionary<string, string> users, Dictionary<string, string> wrapUpCodes, Dictionary<string, string> edgeServers, Dictionary<string, string> campaigns, Dictionary<string, string> contactLists, Dictionary<string, string> presences, Dictionary<string, string> divisions, Dictionary<string, string> dataTables, Dictionary<string, string> groups, Dictionary<string, string> roles)
         {
-            Trace.Info($"InitializeDictionaries(), queues:{queues?.Count}, languages:{languages?.Count}, skills:{skills?.Count}, users:{users?.Count}, wrap up codes: {wrapUpCodes?.Count}, edge servers: {edgeServers?.Count}, campaigns: {campaigns?.Count}, contactLists: {contactLists?.Count}, presenceDefinitions: {presences?.Count}, divisions:{divisions?.Count}, dataTables:{dataTables?.Count}, groups:{groups?.Count}");
+            Trace.Info($"InitializeDictionaries(), queues:{queues?.Count}, languages:{languages?.Count}, skills:{skills?.Count}, users:{users?.Count}, wrap up codes: {wrapUpCodes?.Count}, edge servers: {edgeServers?.Count}, campaigns: {campaigns?.Count}, contactLists: {contactLists?.Count}, presenceDefinitions: {presences?.Count}, divisions:{divisions?.Count}, dataTables:{dataTables?.Count}, groups:{groups?.Count}, roles:{roles?.Count}");
             DictionaryManager.SaveQueues(queues, ConnectionString);
             DictionaryManager.SaveLanguages(languages, ConnectionString);
             DictionaryManager.SaveSkills(skills, ConnectionString);
@@ -91,6 +92,7 @@ namespace pcet.plugin.sql
             DictionaryManager.SaveDivisions(divisions, ConnectionString);
             DictionaryManager.SaveDataTables(dataTables, ConnectionString);
             DictionaryManager.SaveGroups(groups, ConnectionString);
+            DictionaryManager.SaveRoles(roles, ConnectionString);
         }
 
         public bool PushData(string data)
@@ -152,6 +154,74 @@ namespace pcet.plugin.sql
             return true;
         }
 
+        public bool PushUserRoles(string userRole)
+        {
+            List<UserRole> ListOfUserRole = new List<UserRole>();
+
+            var userRoles = userRole.Split('$');
+
+            foreach (var user in userRoles)
+            {
+                var items = user.Split('|');
+                ListOfUserRole.Add(new UserRole { UserId = items[0], Roles = items[1], Division = items[2] });
+            }
+
+            UserReferenceManager.SaveUserRoles(ListOfUserRole, ConnectionString);
+
+            return true;
+        }
+
+        public bool PushUserSkills(string userSkill)
+        {
+            List<UserSkill> ListOfUserSkill = new List<UserSkill>();
+
+            var userSkills = userSkill.Split('$');
+
+            foreach (var user in userSkills)
+            {
+                var items = user.Split('|');
+                ListOfUserSkill.Add(new UserSkill { UserId = items[0], Skill = items[1], Level = items[2] });
+            }
+
+            UserReferenceManager.SaveUserSkills(ListOfUserSkill, ConnectionString);
+
+            return true;
+        }
+
+
+        public bool PushUserQueues(string userQueue)
+        {
+            List<UserQueue> ListOfUserQueue = new List<UserQueue>();
+
+            var userQueues = userQueue.Split('$');
+
+            foreach (var user in userQueues)
+            {
+                var items = user.Split('|');
+                ListOfUserQueue.Add(new UserQueue { UserId = items[0], Queue = items[1] });
+            }
+
+            UserReferenceManager.SaveUserQueues(ListOfUserQueue, ConnectionString);
+
+            return true;
+        }
+
+        public bool PushUserInformations(string userInfo)
+        {
+            List<UserInformation> ListOfUserInformation = new List<UserInformation>();
+
+            var userInformations = userInfo.Split('$');
+
+            foreach (var user in userInformations)
+            {
+                var items = user.Split('|');
+                ListOfUserInformation.Add(new UserInformation { UserId = items[0], Email = items[1], Department = items[2], Title = items[3], Locations = items[4] });
+            }
+
+            UserReferenceManager.SaveUserInformations(ListOfUserInformation, ConnectionString);
+
+            return true;
+        }
 
         public bool PushDataTableRows(string dataTableRowsComplete)
         {

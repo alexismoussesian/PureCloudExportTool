@@ -5,6 +5,7 @@ using pcet.plugin.sql.DataModel.Dictionary;
 using pcet.plugin.sql.DataModel.UserAggregates;
 using pcet.plugin.sql.DataModel.UserDetails;
 using pcet.plugin.sql.DataModel.GroupMember;
+using pcet.plugin.sql.DataModel.UserReference;
 
 namespace pcet.plugin.sql.DataModel
 {
@@ -62,6 +63,16 @@ namespace pcet.plugin.sql.DataModel
         public DbSet<GroupMember.GroupMember> GroupMembers { get; set; }
 
         public DbSet<ConversationMetric.ConversationMetric> ConversationMetrics { get; set; }
+
+        public DbSet<UserRole> userRoles { get; set; }
+
+        public DbSet<UserSkill> UserSkills { get; set; }
+
+        public DbSet<UserQueue> UserQueues { get; set; }
+
+        public DbSet<UserInformation> UserInformations { get; set; }
+
+        public DbSet<Dictionary.Role> Roles { get; set; }
 
     }
 }

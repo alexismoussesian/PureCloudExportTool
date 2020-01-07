@@ -136,9 +136,13 @@ namespace PureCloudExportTool_Main
         public Dictionary<string, string> ListOfDivisions { get; } = new Dictionary<string, string>();
         public Dictionary<string, string> ListOfDataTables { get; } = new Dictionary<string, string>();
         public Dictionary<string, string> ListOfGroups { get; } = new Dictionary<string, string>();
-
-        public List<GroupMember> ListOfGroupMembers = new List<GroupMember>();
-        public List<DataTableRows> ListOfDataTableRows = new List<DataTableRows>();
+        public Dictionary<string, string> ListOfRoles { get; } = new Dictionary<string, string>();
+        public List<UserRole> ListOfUserRoles { get; } = new List<UserRole>();
+        public List<UserSkill> ListOfUserSkills { get; } = new List<UserSkill>();
+        public List<Model.UserQueue> ListOfUserQueues { get; } = new List<Model.UserQueue>();
+        public List<UserInformation> ListOfUserInfos { get; } = new List<UserInformation>();
+        public List<GroupMember> ListOfGroupMembers { get; } = new List<GroupMember>();
+        public List<DataTableRows> ListOfDataTableRows { get; } = new List<DataTableRows>();
 
         private bool _userLoaded;
         private bool _queuesLoaded;
@@ -152,6 +156,7 @@ namespace PureCloudExportTool_Main
         private bool _divisionsLoaded;
         private bool _dataTablesLoaded;
         private bool _groupsLoaded;
+        private bool _rolesLoaded;
 
 
         /// <summary>
@@ -165,16 +170,25 @@ namespace PureCloudExportTool_Main
 
             temp = GetUsers(1, temp);
 
-
             foreach (var user in temp)
             {
                 ListOfUsers[user.Key] = user.Value;
             }
 
+            GetUserDetails();
+
+            //GetUserRoles();
+
+            //GetUserSkills();
+
+            //GetUserQueues();
+
             _userLoaded = true;
 
             return ListOfUsers;
         }
+
+
 
         /// <summary>
         /// Used internaly to call GetUser Method until all users are delivered back, a dictionary with IDs and Names is returned
@@ -266,7 +280,9 @@ namespace PureCloudExportTool_Main
         }
 
 
-
+        /// <summary>
+        /// Get the list of presence
+        /// </summary>
         private void GetPresenceDefinitions()
         {
             Log.Debug("GetPresenceDefinitions started");
@@ -567,7 +583,7 @@ namespace PureCloudExportTool_Main
         /// <summary>
         /// Retrieve all data tables created in the system (max count is 25 in 2019)
         /// </summary>
-        private void GetAllDataTables()
+        private void GetDataTables()
         {
             Log.Debug("GetAllDataTables started");
             ListOfDataTables.Clear();
@@ -575,7 +591,7 @@ namespace PureCloudExportTool_Main
             var currentPage = 1;
 
             var api = new ArchitectApi();
-            var result = api.GetFlowsDatatables("schema", currentPage, PageSize);
+            var result = api.GetFlowsDatatables("schema", 1, PageSize);
 
             foreach (var element in result.Entities)
             {
@@ -587,6 +603,115 @@ namespace PureCloudExportTool_Main
             Log.Info($"All DataTables retrieved {ListOfDataTables.Count}");
             Log.Info($"All DataTableRows retrieved {ListOfDataTableRows.Count}");
         }
+
+
+
+        /// <summary>
+        /// Retrieve all information for users
+        /// </summary>
+        private void GetUserDetails()
+        {
+            Log.Debug("GetUserDetails started");
+            ListOfUserRoles.Clear();
+            ListOfUserSkills.Clear();
+            ListOfUserQueues.Clear();
+            ListOfUserInfos.Clear();
+
+            var userApi = new UsersApi();
+            var result = new UserEntityListing();
+            var currentPage = 1;
+
+            do
+            {
+                result = userApi.GetUsers(PageSize, currentPage++);
+
+                foreach (var user in result.Entities)
+                {
+                    GetUserRoles(user.Id);
+                    GetUserQueues(user.Id);
+                    GetUserSkills(user.Id);
+                    GetUserInfos(user.Id);
+                }
+            } while (result.Entities.Count == 100);
+
+            Log.Info($"All User Details retrieved {ListOfUsers.Count}");
+        }
+
+
+        /// <summary>
+        /// Retrieve all user roles per divisions
+        /// </summary>
+        //private void GetUserRoles()
+        //{
+        //    Log.Debug("GetUserRoles started");
+        //    ListOfUserRoles.Clear();
+
+        //    var userApi = new UsersApi();
+        //    var result = new UserEntityListing();
+        //    var currentPage = 1;
+
+        //    do
+        //    {
+        //        result = userApi.GetUsers(PageSize, currentPage++);
+
+        //        foreach (var user in result.Entities)
+        //        {
+        //            //Log.Info($">>>>>>>>>>> GetUserRoles {user.Name} {ListOfUserRoles.Count}");
+        //            GetUserRoles(user.Id);
+        //        }
+        //    } while (result.Entities.Count == 100);
+
+        //    Log.Info($"All User Roles retrieved {ListOfUserRoles.Count}");
+        //}
+
+
+        //private void GetUserSkills()
+        //{
+        //    Log.Debug("GetUserSkills started");
+        //    ListOfUserSkills.Clear();
+
+        //    var userApi = new UsersApi();
+        //    var result = new UserEntityListing();
+        //    var currentPage = 1;
+
+        //    do
+        //    {
+        //        result = userApi.GetUsers(PageSize, currentPage++);
+
+        //        foreach (var user in result.Entities)
+        //        {
+        //            //Log.Info($">>>>>>>>>>> GetUserSkills {user.Name} {ListOfUserRoles.Count}");
+        //            GetUserSkills(user.Id);
+        //            GetUserInfos(user.Id);
+        //        }
+        //    } while (result.Entities.Count == 100);
+
+        //    Log.Info($"All User Skills retrieved {ListOfUserSkills.Count}");
+        //}
+
+
+        //private void GetUserQueues()
+        //{
+        //    Log.Debug("GetUserQueues started");
+        //    ListOfUserQueues.Clear();
+
+        //    var userApi = new UsersApi();
+        //    var result = new UserEntityListing();
+        //    var currentPage = 1;
+
+        //    do
+        //    {
+        //        result = userApi.GetUsers(PageSize, currentPage++);
+
+        //        foreach (var user in result.Entities)
+        //        {
+        //            //Log.Info($">>>>>>>>>>> GetUserSkills {user.Name} {ListOfUserRoles.Count}");
+        //            GetUserQueues(user.Id);
+        //        }
+        //    } while (result.Entities.Count == 100);
+
+        //    Log.Info($"All User Queues retrieved {ListOfUserQueues.Count}");
+        //}
 
         /// <summary>
         /// Retrieve groups
@@ -606,7 +731,7 @@ namespace PureCloudExportTool_Main
                 foreach (var element in result.Entities)
                 {
                     ListOfGroups.Add(element.Id, element.Name);
-                    GetGroupMembers(element.Id, 1);
+                    GetGroupMembers(element.Id);
                 }
                 result = api.GetGroups(PageSize, ++currentPage);
             }
@@ -617,7 +742,36 @@ namespace PureCloudExportTool_Main
 
         }
 
+        /// <summary>
+        /// Retrieve roles
+        /// </summary>
+        private void GetRoles()
+        {
+            Log.Debug("GetRoles started");
+            ListOfRoles.Clear();
+            var currentPage = 1;
 
+            var api = new AuthorizationApi();
+            var result = api.GetAuthorizationRoles(PageSize, currentPage);
+
+            while (result.Total > ListOfRoles.Count)
+            {
+                foreach (var element in result.Entities)
+                {
+                    ListOfRoles.Add(element.Id, element.Name);
+                }
+                result = api.GetAuthorizationRoles(PageSize, ++currentPage);
+            }
+
+            _rolesLoaded = true;
+            Log.Info($"All Roles retrieved {ListOfGroups.Count}");
+
+        }
+
+        /// <summary>
+        /// Load all dictionaries in list of objects
+        /// </summary>
+        /// <returns></returns>
         public bool LoadAllDictionaries()
         {
             _userLoaded = false;
@@ -632,6 +786,7 @@ namespace PureCloudExportTool_Main
             _divisionsLoaded = false;
             _dataTablesLoaded = false;
             _groupsLoaded = false;
+            _rolesLoaded = false;
 
             var loadUsers = new Task(() =>
             {
@@ -665,8 +820,9 @@ namespace PureCloudExportTool_Main
             var loadCampaigns = new Task(GetCampaigns);
             var loadContactLists = new Task(GetContactLists);
             var loadSystemPresence = new Task(GetPresenceDefinitions);
-            var loadDataTables = new Task(GetAllDataTables);
+            var loadDataTables = new Task(GetDataTables);
             var loadGroups = new Task(GetGroups);
+            var loadRoles = new Task(GetRoles);
 
             loadUsers.Start();
             loadQueues.Start();
@@ -680,9 +836,10 @@ namespace PureCloudExportTool_Main
             loadDivisions.Start();
             loadDataTables.Start();
             loadGroups.Start();
+            loadRoles.Start();
 
-            Task.WaitAll(loadUsers, loadQueues, loadSystemPresence, loadLanguages, loadSkills, loadWrapUpCodes, loadEdgeServers, loadCampaigns, loadContactLists, loadDivisions, loadDataTables, loadGroups);
-            return _userLoaded && _queuesLoaded && _presencesLoaded && _languagesLoaded && _skillsLoaded && _wrapUpCodesLoaded && _edgeServersLoaded && _campaignsLoaded && _contactListsLoaded && _divisionsLoaded && _dataTablesLoaded && _groupsLoaded;
+            Task.WaitAll(loadUsers, loadQueues, loadSystemPresence, loadLanguages, loadSkills, loadWrapUpCodes, loadEdgeServers, loadCampaigns, loadContactLists, loadDivisions, loadDataTables, loadGroups, loadRoles);
+            return _userLoaded && _queuesLoaded && _presencesLoaded && _languagesLoaded && _skillsLoaded && _wrapUpCodesLoaded && _edgeServersLoaded && _campaignsLoaded && _contactListsLoaded && _divisionsLoaded && _dataTablesLoaded && _groupsLoaded && _rolesLoaded;
         }
         #endregion
 
@@ -991,15 +1148,16 @@ namespace PureCloudExportTool_Main
         /// </summary>
         /// <param name="groupId"></param>
         /// <param name="currentPage"></param>
-        private void GetGroupMembers(string groupId, int currentPage)
+        private void GetGroupMembers(string groupId)
         {
             try
             {
                 Log.Debug("GetGroupMembers started");
 
                 var api = new GroupsApi();
-                var result = api.GetGroupMembers(groupId, PageSize, currentPage++);
-                Log.Info($">>>>> api.GetGroupMembers #{ListOfGroups.Count}");
+                //var result = api.GetGroupMembers(groupId, PageSize, 1);
+                var result = api.GetGroupIndividuals(groupId);
+                //Log.Info($">>>>> api.GetGroupMembers #{ListOfGroups.Count}");
 
                 foreach (var element in result.Entities)
                 {
@@ -1028,7 +1186,225 @@ namespace PureCloudExportTool_Main
                     Thread.Sleep(200);
                 }
                 Log.Info($"Re-calling method {nameof(GetGroupMembers)}");
-                GetGroupMembers(groupId, currentPage++);
+                GetGroupMembers(groupId);
+            }
+        }
+
+
+        /// <summary>
+        /// Get user's role by divisions
+        /// </summary>
+        /// <param name="userId"></param>
+        private void GetUserRoles(string userId)
+        {
+            try
+            {
+                //Log.Debug("GetUserRoles started");
+
+                var userAuth = new AuthorizationApi();
+
+                var auth = userAuth.GetAuthorizationSubject(userId);
+
+                if (auth.Grants != null)
+                {
+                    foreach (var result in auth.Grants)
+                    {
+                        ListOfUserRoles.Add(new UserRole() { UserId = result.SubjectId, Roles = result.Role.Id, Division = result.Division.Id });
+                        //Log.Info($">>>>>>>>>>> GetUserRoles {result.SubjectId} {result.Role.Id} {result.Division.Id}");
+                    }
+                }
+
+                //Log.Debug($"All User roles retrieved {ListOfUserRoles.Count}");
+            }
+            catch (ApiException ex)
+            {
+                if (ex.ErrorCode != 429) throw;
+                string ratelimitCount;
+                string ratelimitAllowed;
+                string ratelimitReset;
+                ex.Headers.TryGetValue("inin-ratelimit-count", out ratelimitCount);
+                ex.Headers.TryGetValue("inin-ratelimit-allowed", out ratelimitAllowed);
+                ex.Headers.TryGetValue("inin-ratelimit-reset", out ratelimitReset);
+                Log.Info($"API rate limit has been reached, {nameof(ratelimitCount)}:{ratelimitCount}, {nameof(ratelimitAllowed)}:{ratelimitAllowed}, {nameof(ratelimitReset)}:{ratelimitReset}");
+                var resetTimeSeconds = 60; // default value in case that header parsing will go wrong                
+                int.TryParse(ratelimitReset, out resetTimeSeconds);
+                if (resetTimeSeconds > 60) throw new Exception("API rate limit reset > 60"); // if resetTimeSeconds is grather than 60 it means that something is wrong
+                var resetTime = DateTime.Now.AddSeconds(resetTimeSeconds).AddMilliseconds(500); // adding a few milliseconds as a margin of error
+                while (resetTime > DateTime.Now)
+                {
+                    Log.Debug($"Waiting, {nameof(resetTime)}:{resetTime.ToString("O")}");
+                    Thread.Sleep(200);
+                }
+                Log.Info($"Re-calling method {nameof(GetUserRoles)}");
+                GetUserRoles(userId);
+            }
+        }
+
+        /// <summary>
+        /// Get user's skill
+        /// </summary>
+        /// <param name="userId"></param>
+        private void GetUserSkills(string userId)
+        {
+            try
+            {
+                Log.Debug("GetUserSkills started");
+
+                var users = new UsersApi();
+
+                var user = users.GetUserRoutingskills(userId);
+
+                if (user.Entities != null)
+                {
+                    foreach (var result in user.Entities)
+                    {
+                        ListOfUserSkills.Add(new UserSkill() { UserId = userId, Skill = result.Id, Level = result.Proficiency.Value.ToString() });
+                    }
+                }
+
+                Log.Debug($"All User roles retrieved {ListOfUserSkills.Count}");
+            }
+            catch (ApiException ex)
+            {
+                if (ex.ErrorCode != 429) throw;
+                string ratelimitCount;
+                string ratelimitAllowed;
+                string ratelimitReset;
+                ex.Headers.TryGetValue("inin-ratelimit-count", out ratelimitCount);
+                ex.Headers.TryGetValue("inin-ratelimit-allowed", out ratelimitAllowed);
+                ex.Headers.TryGetValue("inin-ratelimit-reset", out ratelimitReset);
+                Log.Info($"API rate limit has been reached, {nameof(ratelimitCount)}:{ratelimitCount}, {nameof(ratelimitAllowed)}:{ratelimitAllowed}, {nameof(ratelimitReset)}:{ratelimitReset}");
+                var resetTimeSeconds = 60; // default value in case that header parsing will go wrong                
+                int.TryParse(ratelimitReset, out resetTimeSeconds);
+                if (resetTimeSeconds > 60) throw new Exception("API rate limit reset > 60"); // if resetTimeSeconds is grather than 60 it means that something is wrong
+                var resetTime = DateTime.Now.AddSeconds(resetTimeSeconds).AddMilliseconds(500); // adding a few milliseconds as a margin of error
+                while (resetTime > DateTime.Now)
+                {
+                    Log.Debug($"Waiting, {nameof(resetTime)}:{resetTime.ToString("O")}");
+                    Thread.Sleep(200);
+                }
+                Log.Info($"Re-calling method {nameof(GetUserSkills)}");
+                GetUserSkills(userId);
+            }
+        }
+
+        /// <summary>
+        /// Get user's queues
+        /// </summary>
+        /// <param name="userId"></param>
+        private void GetUserQueues(string userId)
+        {
+            try
+            {
+                Log.Debug("GetUserQueues started");
+
+                var users = new UsersApi();
+
+                var user = users.GetUserQueues(userId, PageSize, 1);
+
+                if (user.Entities != null)
+                {
+                    foreach (var result in user.Entities)
+                    {
+                        ListOfUserQueues.Add(new Model.UserQueue() { UserId = userId, Queue = result.Id });
+                    }
+                }
+
+                Log.Debug($"All User queues retrieved {ListOfUserQueues.Count}");
+            }
+            catch (ApiException ex)
+            {
+                if (ex.ErrorCode != 429) throw;
+                string ratelimitCount;
+                string ratelimitAllowed;
+                string ratelimitReset;
+                ex.Headers.TryGetValue("inin-ratelimit-count", out ratelimitCount);
+                ex.Headers.TryGetValue("inin-ratelimit-allowed", out ratelimitAllowed);
+                ex.Headers.TryGetValue("inin-ratelimit-reset", out ratelimitReset);
+                Log.Info($"API rate limit has been reached, {nameof(ratelimitCount)}:{ratelimitCount}, {nameof(ratelimitAllowed)}:{ratelimitAllowed}, {nameof(ratelimitReset)}:{ratelimitReset}");
+                var resetTimeSeconds = 60; // default value in case that header parsing will go wrong                
+                int.TryParse(ratelimitReset, out resetTimeSeconds);
+                if (resetTimeSeconds > 60) throw new Exception("API rate limit reset > 60"); // if resetTimeSeconds is grather than 60 it means that something is wrong
+                var resetTime = DateTime.Now.AddSeconds(resetTimeSeconds).AddMilliseconds(500); // adding a few milliseconds as a margin of error
+                while (resetTime > DateTime.Now)
+                {
+                    Log.Debug($"Waiting, {nameof(resetTime)}:{resetTime.ToString("O")}");
+                    Thread.Sleep(200);
+                }
+                Log.Info($"Re-calling method {nameof(GetUserQueues)}");
+                GetUserQueues(userId);
+            }
+        }
+
+
+        /// <summary>
+        /// Get user's information from the user profile
+        /// </summary>
+        /// <param name="userId"></param>
+        private void GetUserInfos(string userId)
+        {
+            try
+            {
+                Log.Debug("GetUserQueues started");
+
+                List<string> criteria = new List<string>();
+                criteria.Add("routingStatus");
+                criteria.Add("presence");
+                criteria.Add("conversationSummary");
+                criteria.Add("outOfOffice");
+                criteria.Add("geolocation");
+                criteria.Add("station");
+                criteria.Add("authorization");
+
+                criteria.Add("certifications");
+                criteria.Add("groups");
+                criteria.Add("employerinfo");
+                criteria.Add("locations");
+                criteria.Add("profileskills");
+                criteria.Add("skills");
+                criteria.Add("languagepreference");
+
+                var users = new UsersApi();
+
+                var user = users.GetUser(userId, criteria);
+
+
+                if (user != null)
+                {
+                    string location = "";
+                    foreach (var loc in user.Locations)
+                    {
+                        location = loc.Id;
+                    }
+
+                    //var location2 = user.Locations.LastIndexOf(0);
+
+                    ListOfUserInfos.Add(new UserInformation() { UserId = userId, Email = user.Email, Department = user.Department, Title = user.Title, Locations = location });
+                }
+
+                Log.Debug($"All User queues retrieved {ListOfUserQueues.Count}");
+            }
+            catch (ApiException ex)
+            {
+                if (ex.ErrorCode != 429) throw;
+                string ratelimitCount;
+                string ratelimitAllowed;
+                string ratelimitReset;
+                ex.Headers.TryGetValue("inin-ratelimit-count", out ratelimitCount);
+                ex.Headers.TryGetValue("inin-ratelimit-allowed", out ratelimitAllowed);
+                ex.Headers.TryGetValue("inin-ratelimit-reset", out ratelimitReset);
+                Log.Info($"API rate limit has been reached, {nameof(ratelimitCount)}:{ratelimitCount}, {nameof(ratelimitAllowed)}:{ratelimitAllowed}, {nameof(ratelimitReset)}:{ratelimitReset}");
+                var resetTimeSeconds = 60; // default value in case that header parsing will go wrong                
+                int.TryParse(ratelimitReset, out resetTimeSeconds);
+                if (resetTimeSeconds > 60) throw new Exception("API rate limit reset > 60"); // if resetTimeSeconds is grather than 60 it means that something is wrong
+                var resetTime = DateTime.Now.AddSeconds(resetTimeSeconds).AddMilliseconds(500); // adding a few milliseconds as a margin of error
+                while (resetTime > DateTime.Now)
+                {
+                    Log.Debug($"Waiting, {nameof(resetTime)}:{resetTime.ToString("O")}");
+                    Thread.Sleep(200);
+                }
+                Log.Info($"Re-calling method {nameof(GetUserQueues)}");
+                GetUserQueues(userId);
             }
         }
 

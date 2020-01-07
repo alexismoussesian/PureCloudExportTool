@@ -364,6 +364,40 @@ namespace pcet.plugin.sql.DataModel.Dictionary
             }
         }
 
+        public static void SaveRoles(Dictionary<string, string> roles, string connectionString)
+        {
+            using (var dbCtx = new DatabaseContext(connectionString))
+            {
+                try
+                {
+                    var counter = new TransactionCounter();
+                    foreach (var q in roles)
+                    {
+                        if (dbCtx.Roles.Any(x => x.id == q.Key)) // does id exist
+                        {
+                            // update name if id does exist
+                            if (q.Value == null) continue;
+                            var existingItem = dbCtx.Roles.FirstOrDefault(x => x.id == q.Key);
+                            if (existingItem == null || existingItem.name == q.Value) continue;
+                            existingItem.name = q.Value;
+                            counter.RowsUpdated++;
+                        }
+                        else
+                        {
+                            // create an item if id doesn't exist
+                            dbCtx.Roles.Add(new Role() { id = q.Key, name = q.Value });
+                            counter.RowsAdded++;
+                        }
+                    }
+                    dbCtx.SaveChanges();
+                    Trace.Info($"Roles added:{counter.RowsAdded}, updated:{counter.RowsUpdated}");
+                }
+                catch (Exception ex)
+                {
+                    Trace.Fatal(ex);
+                }
+            }
+        }
 
         public static void SaveDataTables(Dictionary<string, string> dataTable, string connectionString)
         {

@@ -53,7 +53,7 @@ namespace pcet.plugins
         /// <summary>
         /// Called when dictionaries should be initialized (i.e. Conversations, Queues, Users)
         /// </summary>
-        void InitializeDictionaries(Dictionary<string, string> queues, Dictionary<string, string> languages, Dictionary<string, string> skills, Dictionary<string, string> users, Dictionary<string, string> wrapUpCodes, Dictionary<string, string> edgeServers, Dictionary<string, string> campaigns, Dictionary<string, string> contactLists, Dictionary<string, string> systemPresence, Dictionary<string, string> divisions, Dictionary<string, string> dataTables, Dictionary<string, string> groups);
+        void InitializeDictionaries(Dictionary<string, string> queues, Dictionary<string, string> languages, Dictionary<string, string> skills, Dictionary<string, string> users, Dictionary<string, string> wrapUpCodes, Dictionary<string, string> edgeServers, Dictionary<string, string> campaigns, Dictionary<string, string> contactLists, Dictionary<string, string> systemPresence, Dictionary<string, string> divisions, Dictionary<string, string> dataTables, Dictionary<string, string> groups, Dictionary<string, string> roles);
 
         /// <summary>
         /// Called when data needs to be pushed to the 3rd party system (target)
@@ -68,6 +68,34 @@ namespace pcet.plugins
         /// <param name="ListOfMembers"></param>
         /// <returns></returns>
         bool PushGroupMembers(string ListOfMembers);
+
+        /// <summary>
+        /// Called when user roles needs to be pushed to the 3rd party system (target)
+        /// </summary>
+        /// <param name="ListOfUserRoles"></param>
+        /// <returns></returns>
+        bool PushUserRoles(string ListOfUserRoles);
+
+        /// <summary>
+        /// Called when user skills needs to be pushed to the 3rd party system (target)
+        /// </summary>
+        /// <param name="ListOfUserSkills"></param>
+        /// <returns></returns>
+        bool PushUserSkills(string ListOfUserSkills);
+
+        /// <summary>
+        /// Called when user queues needs to be pushed to the 3rd party system (target)
+        /// </summary>
+        /// <param name="ListOfUserQueues"></param>
+        /// <returns></returns>
+        bool PushUserQueues(string ListOfUserQueues);
+
+        /// <summary>
+        /// Called when user informations needs to be pushed to the 3rd party system (target)
+        /// </summary>
+        /// <param name="ListOfUserInformations"></param>
+        /// <returns></returns>
+        bool PushUserInformations(string ListOfUserInformations);
 
         /// <summary>
         /// Called when datatable rows needs to be pushed to the 3rd party system (target)

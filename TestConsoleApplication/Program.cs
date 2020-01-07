@@ -11,7 +11,7 @@ namespace TestConsoleApplication
     {
         static void Main(string[] args)
         {
-            var service = PureCloudExportTool_Main.Main();
+            PureCloudExportTool_Main.Main.Begin(args);
 
         }
     }

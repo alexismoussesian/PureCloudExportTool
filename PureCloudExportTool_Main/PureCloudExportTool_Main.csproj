@@ -59,6 +59,10 @@
     <Compile Include="Model\GroupMember.cs" />
     <Compile Include="Model\Interval.cs" />
     <Compile Include="Model\ParticipantAttr.cs" />
+    <Compile Include="Model\UserInformation.cs" />
+    <Compile Include="Model\UserQueue.cs" />
+    <Compile Include="Model\UserRole.cs" />
+    <Compile Include="Model\UserSkill.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PureCloud.cs" />
   </ItemGroup>
