@@ -9,6 +9,7 @@ using System.Text;
 using Newtonsoft.Json;
 using PureCloudExportTool_Main.Model;
 using pcet.plugins;
+using System.Configuration;
 
 namespace PureCloudExportTool_Main
 {
@@ -154,6 +155,134 @@ namespace PureCloudExportTool_Main
             //AppTitle.StopProgress();
             //ShowPressAnyKey();
         }
+
+        public static void Begin()
+        {
+
+            // initiate log
+            BasicConfigurator.Configure();
+
+            try
+            {
+                Log.Debug("Application is started");
+
+                string _clientId = ConfigurationManager.AppSettings["clientid"];
+                string _clientSecret = ConfigurationManager.AppSettings["clientsecret"];
+                string _environment = ConfigurationManager.AppSettings["environment"];
+                string _startDate = ConfigurationManager.AppSettings["startdate"];
+                string _targetSql = ConfigurationManager.AppSettings["target-sql"];
+                string _targetCsv = ConfigurationManager.AppSettings["target-csv"];
+                string _participantAttrs = ConfigurationManager.AppSettings["participant-attrs"];
+
+                string[] args = { _clientId, _clientSecret, _environment, _startDate, _targetSql, _targetCsv, _participantAttrs };
+
+                // Load plugins
+                _loadedPlugins = new PluginLoader().LoadPlugins(PluginsFolder, args, out _pluginsCmdArgsHelp);
+
+                // check parameters
+                if (args.Length == 0 || args[0].Equals("/help"))
+                {
+                    ShowUsage();
+                    ShowPressAnyKey();
+                    return;
+                }
+
+                // Retrieve arguments from command line
+                Log.Debug($"Number of command line parameters = {args.Length}");
+                for (var i = 0; i < args.Length; i++)
+                {
+                    Log.Debug($"Arg[{i}] = [{args[i]}]");
+                    var splittedArg = args[i].Replace("/", "").Split('=');
+                    var key = splittedArg[0];
+                    var value = "";
+                    if (splittedArg.Length == 2)
+                    {
+                        value = splittedArg[1];
+                    }
+                    switch (key.ToLower())
+                    {
+                        case "clientid":
+                            PureCloudObj.ClientId = value;
+                            break;
+                        case "clientsecret":
+                            PureCloudObj.ClientSecret = value;
+                            break;
+                        case "environment":
+                            PureCloudObj.Environment = value;
+                            break;
+                        case "stats":
+                            _stats = value.ToLower().Split(',').ToList();
+                            break;
+                        case "startdate":
+                            DateTime parsedValue;
+                            if (DateTime.TryParseExact(value, DateTimeFormats, CultureInfo.CurrentCulture, DateTimeStyles.None, out parsedValue))
+                            {
+                                PureCloudObj.StartDate = parsedValue;
+                                Log.Info($"Start date parameter: {PureCloudObj.StartDate?.ToString("o")}");
+                            }
+                            else
+                            {
+                                Log.Error($"Couldn't parse startdate. Delivered value:{value}, expected formats:{string.Join(", ", DateTimeFormats)}");
+                            }
+                            break;
+                    }
+                }
+
+                // Set stats to default if it wasn't specified
+                if (_stats.Count == 0)
+                {
+                    _stats = new List<string>()
+                    {
+                        "conversations",
+                        "queues",
+                        "users",
+                        "userdetails"
+                    };
+                }
+
+                // Login
+                PureCloudObj.Login();
+
+                // Load dictionaries & pull all analytics
+                if (PureCloudObj.LoadAllDictionaries())
+                {
+                    Log.Info("All Dictionaries loaded.");
+                    BeginProcess();
+                }
+
+                // And... we're done!
+                PureCloudObj.Logout();
+            }
+            catch (ArgumentException ex)
+            {
+                Log.Fatal($"Application error {ex.Message}");
+            }
+            catch (NotImplementedException ex)
+            {
+                Log.Fatal($"Application error {ex.Message}");
+            }
+            catch (Exception ex)
+            {
+                Log.Fatal("Application error", ex);
+                ShowUsage();
+            }
+            finally
+            {
+                if (_loadedPlugins != null)
+                {
+                    // Dispose all plugins
+
+                    foreach (var loadedPlugin in _loadedPlugins)
+                    {
+                        loadedPlugin.Dispose();
+                    }
+                }
+            }
+
+            //AppTitle.StopProgress();
+            //ShowPressAnyKey();
+        }
+
 
         static void BeginProcess()
         {

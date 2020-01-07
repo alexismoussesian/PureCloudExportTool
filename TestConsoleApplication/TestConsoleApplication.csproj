@@ -51,6 +51,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\PureCloudExportTool\PureCloudExportTool_Service.csproj">
+      <Project>{437F8331-25B2-461B-97C2-FB4EA8879DDF}</Project>
+      <Name>PureCloudExportTool_Service</Name>
+    </ProjectReference>
     <ProjectReference Include="..\PureCloudExportTool_Main\PureCloudExportTool_Main.csproj">
       <Project>{616b3c62-f16a-4332-accf-7b6b97c77812}</Project>
       <Name>PureCloudExportTool_Main</Name>

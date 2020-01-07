@@ -45,6 +45,7 @@
       <HintPath>..\..\..\..\Users\Alexis.Moussesian.I3DOMAIN\Documents\Visual Studio 2015\Projects\platform-client-sdk-dotnet-master\build\bin\RestSharp.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -67,6 +68,7 @@
     <Compile Include="PureCloud.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
