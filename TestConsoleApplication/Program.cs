@@ -13,7 +13,8 @@ namespace TestConsoleApplication
         static void Main(string[] args)
         {
             //var service = PureCloudExportTool_Main.Main.Begin(args);
-            var service = new PureCloudExportTool_Service();
+            //var service = new PureCloudExportTool_Service();
+            var service = new Main();
 
             Console.WriteLine("End Processing");
             Console.WriteLine("Press enter to exit...");

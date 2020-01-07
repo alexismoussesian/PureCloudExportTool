@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 
-namespace PureCloudExportTool
+namespace PureCloudExportTool_Service
 {
     public enum ServiceState
     {

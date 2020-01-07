@@ -7,8 +7,8 @@
     <ProjectGuid>{437F8331-25B2-461B-97C2-FB4EA8879DDF}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>PureCloudExportTool</RootNamespace>
-    <AssemblyName>PureCloudExportTool</AssemblyName>
+    <RootNamespace>PureCloudExportTool_Service</RootNamespace>
+    <AssemblyName>PureCloudExportTool_Service</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>

@@ -1,8 +1,9 @@
 ﻿using System;
 using System.ServiceModel;
 using System.ServiceProcess;
+using PureCloudExportTool_Main;
 
-namespace PureCloudExportTool
+namespace PureCloudExportTool_Service
 {
     public class Program : ServiceBase
     {
@@ -18,17 +19,20 @@ namespace PureCloudExportTool
         /// </summary>
         static void Main()
         {
-            ServiceBase[] ServicesToRun;
-            ServicesToRun = new ServiceBase[]
-            {
-                new PureCloudExportTool_Service()
-            };
-            ServiceBase.Run(ServicesToRun);
+            var service = new Main();
+
+            //ServiceBase[] ServicesToRun;
+            //ServicesToRun = new ServiceBase[]
+            //{
+            //    new PureCloudExportTool_Service()
+            //};
+            //ServiceBase.Run(ServicesToRun);
         }
 
         protected override void OnStart(string[] args)
         {
-            var service = new PureCloudExportTool_Service();
+            //var service = new PureCloudExportTool_Service();
+            var service = new Main();
 
             Console.WriteLine("End Processing");
             Console.WriteLine("Press enter to exit...");

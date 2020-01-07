@@ -156,7 +156,7 @@ namespace PureCloudExportTool_Main
             //ShowPressAnyKey();
         }
 
-        public static void Begin()
+        public Main()
         {
 
             // initiate log
@@ -174,7 +174,7 @@ namespace PureCloudExportTool_Main
                 string _targetCsv = ConfigurationManager.AppSettings["target-csv"];
                 string _participantAttrs = ConfigurationManager.AppSettings["participant-attrs"];
 
-                string[] args = { _clientId, _clientSecret, _environment, _startDate, _targetSql, _targetCsv, _participantAttrs };
+                string[] args = { "/clientid=" + _clientId, "/clientsecret=" + _clientSecret, "/environment=" + _environment, "/startdate=" + _startDate, "/target-sql=" + _targetSql, "/target-csv=" + _targetCsv, "/participant-attrs=" + _participantAttrs };
 
                 // Load plugins
                 _loadedPlugins = new PluginLoader().LoadPlugins(PluginsFolder, args, out _pluginsCmdArgsHelp);
@@ -284,7 +284,7 @@ namespace PureCloudExportTool_Main
         }
 
 
-        static void BeginProcess()
+        public static void BeginProcess()
         {
             foreach (var loadedPlugin in _loadedPlugins)
             {

@@ -1,4 +1,4 @@
-﻿namespace PureCloudExportTool
+﻿namespace PureCloudExportTool_Service
 {
     partial class PureCloudExportTool_Service
     {
