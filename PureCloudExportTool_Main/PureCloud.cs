@@ -634,6 +634,14 @@ namespace PureCloudExportTool_Main
                 }
             } while (result.Entities.Count == 100);
 
+            Log.Info($"All User Queues retrieved {ListOfUserQueues.Count}");
+
+            Log.Info($"All User Roles retrieved {ListOfUserRoles.Count}");
+
+            Log.Info($"All User Skills retrieved {ListOfUserSkills.Count}");
+
+            Log.Info($"All User Infos retrieved {ListOfUserInfos.Count}");
+
             Log.Info($"All User Details retrieved {ListOfUsers.Count}");
         }
 
@@ -1152,7 +1160,7 @@ namespace PureCloudExportTool_Main
         {
             try
             {
-                Log.Debug("GetGroupMembers started");
+                //Log.Debug("GetGroupMembers started");
 
                 var api = new GroupsApi();
                 //var result = api.GetGroupMembers(groupId, PageSize, 1);
@@ -1164,7 +1172,7 @@ namespace PureCloudExportTool_Main
                     ListOfGroupMembers.Add(new GroupMember() { id = element.Id, name = element.Name, groupId = groupId });
                 }
 
-                Log.Debug($"All Groups retrieved {ListOfGroups.Count}");
+                //Log.Debug($"Group members retrieved {ListOfGroups.Count}");
             }
             catch (ApiException ex)
             {
@@ -1248,7 +1256,7 @@ namespace PureCloudExportTool_Main
         {
             try
             {
-                Log.Debug("GetUserSkills started");
+                //Log.Debug("GetUserSkills started");
 
                 var users = new UsersApi();
 
@@ -1262,7 +1270,7 @@ namespace PureCloudExportTool_Main
                     }
                 }
 
-                Log.Debug($"All User roles retrieved {ListOfUserSkills.Count}");
+                //Log.Debug($"User skills retrieved {ListOfUserSkills.Count}");
             }
             catch (ApiException ex)
             {
@@ -1273,15 +1281,15 @@ namespace PureCloudExportTool_Main
                 ex.Headers.TryGetValue("inin-ratelimit-count", out ratelimitCount);
                 ex.Headers.TryGetValue("inin-ratelimit-allowed", out ratelimitAllowed);
                 ex.Headers.TryGetValue("inin-ratelimit-reset", out ratelimitReset);
-                Log.Info($"API rate limit has been reached, {nameof(ratelimitCount)}:{ratelimitCount}, {nameof(ratelimitAllowed)}:{ratelimitAllowed}, {nameof(ratelimitReset)}:{ratelimitReset}");
+                Log.Info($"API rate limit has been reached for method {nameof(GetUserSkills)}, {nameof(ratelimitCount)}:{ratelimitCount}, {nameof(ratelimitAllowed)}:{ratelimitAllowed}, {nameof(ratelimitReset)}:{ratelimitReset}");
                 var resetTimeSeconds = 60; // default value in case that header parsing will go wrong                
                 int.TryParse(ratelimitReset, out resetTimeSeconds);
                 if (resetTimeSeconds > 60) throw new Exception("API rate limit reset > 60"); // if resetTimeSeconds is grather than 60 it means that something is wrong
                 var resetTime = DateTime.Now.AddSeconds(resetTimeSeconds).AddMilliseconds(500); // adding a few milliseconds as a margin of error
                 while (resetTime > DateTime.Now)
                 {
-                    Log.Debug($"Waiting, {nameof(resetTime)}:{resetTime.ToString("O")}");
-                    Thread.Sleep(200);
+                    Log.Debug($"Waiting, {nameof(resetTime)}:{DateTime.Now.ToString("O")}");
+                    Thread.Sleep(2000);
                 }
                 Log.Info($"Re-calling method {nameof(GetUserSkills)}");
                 GetUserSkills(userId);
@@ -1296,7 +1304,7 @@ namespace PureCloudExportTool_Main
         {
             try
             {
-                Log.Debug("GetUserQueues started");
+                //Log.Debug("GetUserQueues started");
 
                 var users = new UsersApi();
 
@@ -1310,7 +1318,7 @@ namespace PureCloudExportTool_Main
                     }
                 }
 
-                Log.Debug($"All User queues retrieved {ListOfUserQueues.Count}");
+                //Log.Debug($"User queues retrieved {ListOfUserQueues.Count}");
             }
             catch (ApiException ex)
             {
@@ -1345,7 +1353,7 @@ namespace PureCloudExportTool_Main
         {
             try
             {
-                Log.Debug("GetUserQueues started");
+                //Log.Debug("GetUserInfos started");
 
                 List<string> criteria = new List<string>();
                 criteria.Add("routingStatus");
@@ -1382,7 +1390,7 @@ namespace PureCloudExportTool_Main
                     ListOfUserInfos.Add(new UserInformation() { UserId = userId, Email = user.Email, Department = user.Department, Title = user.Title, Locations = location });
                 }
 
-                Log.Debug($"All User queues retrieved {ListOfUserQueues.Count}");
+                //Log.Debug($"User info retrieved {ListOfUserInfos.Count}");
             }
             catch (ApiException ex)
             {
@@ -1418,7 +1426,7 @@ namespace PureCloudExportTool_Main
         {
             try
             {
-                Log.Debug("GetDataTableRows started");
+                //Log.Debug("GetDataTableRows started");
 
                 var api = new ArchitectApi();
                 var result = api.GetFlowsDatatableRows(dataTableId, currentPage, PageSize, false);
@@ -1457,7 +1465,7 @@ namespace PureCloudExportTool_Main
                 Log.Info($"Re-calling method {nameof(GetDataTableRows)}");
                 GetDataTableRows(dataTableId, currentPage++);
             }
-            Log.Debug($"All DataTableRows retrieved {ListOfDataTableRows.Count}");
+            //Log.Debug($"All DataTableRows retrieved {ListOfDataTableRows.Count}");
         }
 
         #endregion

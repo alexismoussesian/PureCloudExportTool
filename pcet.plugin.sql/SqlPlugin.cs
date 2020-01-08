@@ -80,6 +80,7 @@ namespace pcet.plugin.sql
         public void InitializeDictionaries(Dictionary<string, string> queues, Dictionary<string, string> languages, Dictionary<string, string> skills, Dictionary<string, string> users, Dictionary<string, string> wrapUpCodes, Dictionary<string, string> edgeServers, Dictionary<string, string> campaigns, Dictionary<string, string> contactLists, Dictionary<string, string> presences, Dictionary<string, string> divisions, Dictionary<string, string> dataTables, Dictionary<string, string> groups, Dictionary<string, string> roles)
         {
             Trace.Info($"InitializeDictionaries(), queues:{queues?.Count}, languages:{languages?.Count}, skills:{skills?.Count}, users:{users?.Count}, wrap up codes: {wrapUpCodes?.Count}, edge servers: {edgeServers?.Count}, campaigns: {campaigns?.Count}, contactLists: {contactLists?.Count}, presenceDefinitions: {presences?.Count}, divisions:{divisions?.Count}, dataTables:{dataTables?.Count}, groups:{groups?.Count}, roles:{roles?.Count}");
+            Trace.Info($"ConnectionString:{ConnectionString}");
             DictionaryManager.SaveQueues(queues, ConnectionString);
             DictionaryManager.SaveLanguages(languages, ConnectionString);
             DictionaryManager.SaveSkills(skills, ConnectionString);

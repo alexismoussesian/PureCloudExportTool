@@ -17,7 +17,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\PureCloudExportTool_Main\bin\Debug\Plugins\</OutputPath>
+    <OutputPath>..\PureCloudExportTool\bin\Debug\Plugins\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -31,7 +31,16 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="log4net, Version=2.0.7.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <HintPath>..\packages\log4net.2.0.7\lib\net45-full\log4net.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -41,10 +50,37 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
+    <Compile Include="Continuity\IntervalManager.cs" />
+    <Compile Include="Continuity\OngoingConversationManager.cs" />
+    <Compile Include="CSVPlugin.cs" />
+    <Compile Include="Dictionary\DictionaryManager.cs" />
+    <Compile Include="Mapping\Item.cs" />
+    <Compile Include="Mapping\MappingManager.cs" />
+    <Compile Include="Mapping\Reflectionable.cs" />
+    <Compile Include="Model\Conversation.cs" />
+    <Compile Include="Model\ConversationManager.cs" />
+    <Compile Include="Model\Participant.cs" />
+    <Compile Include="Model\Property.cs" />
+    <Compile Include="Model\Segment.cs" />
+    <Compile Include="Model\Session.cs" />
+    <Compile Include="Output\FileManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Mapping\pcet.plugin.csv.mapping.json" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\pcet.plugins\pcet.plugins.csproj">
+      <Project>{c6e154c2-fee4-40d5-b030-27ee8fb53845}</Project>
+      <Name>pcet.plugins</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>copy "$(ProjectDir)Mapping\pcet.plugin.csv.mapping.json" "$(SolutionDir)PureCloudExportTool\bin\$(ConfigurationName)\Plugins\pcet.plugin.csv.mapping.json"</PostBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
