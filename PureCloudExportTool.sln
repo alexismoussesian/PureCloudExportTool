@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PureCloudExportTool_Service", "PureCloudExportTool\PureCloudExportTool_Service.csproj", "{437F8331-25B2-461B-97C2-FB4EA8879DDF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PureCloudExportTool_Service", "PureCloudExportTool_Service\PureCloudExportTool_Service.csproj", "{437F8331-25B2-461B-97C2-FB4EA8879DDF}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PureCloudExportTool_Main", "PureCloudExportTool_Main\PureCloudExportTool_Main.csproj", "{616B3C62-F16A-4332-ACCF-7B6B97C77812}"
 EndProject
