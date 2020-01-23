@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+	<Product Id="*" Name="PCET_Installation" Language="1033" Version="1.0.0.0" Manufacturer="" UpgradeCode="2d8291d4-d1de-48c6-bbbc-15171095c682">
+		<Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
+
+		<MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
+		<MediaTemplate />
+
+		<Feature Id="ProductFeature" Title="PCET_Installation" Level="1">
+			<ComponentGroupRef Id="ProductComponents" />
+		</Feature>
+	</Product>
+
+	<Fragment>
+		<Directory Id="TARGETDIR" Name="SourceDir">
+			<Directory Id="ProgramFilesFolder">
+				<Directory Id="INSTALLFOLDER" Name="PCET_Installation" />
+			</Directory>
+		</Directory>
+	</Fragment>
+
+	<Fragment>
+		<ComponentGroup Id="ProductComponents" Directory="INSTALLFOLDER">
+			<!-- TODO: Remove the comments around this Component element and the ComponentRef below in order to add resources to this installer. -->
+			<!-- <Component Id="ProductComponent"> -->
+				<!-- TODO: Insert files, registry keys, and other resources here. -->
+			<!-- </Component> -->
+      <Component Id="ProductComponent">
+        <!--<File Id="Insert dll name" Name="Insert dll name again" Source="Insert path to dll" Vital="yes" KeyPath="no" DiskId="1"/>-->
+        <File Id="WindowsService1.exe" Name="WindowsService1.exe" Source="..\WindowsService1\bin\Debug\WindowsService1.exe" Vital="yes" KeyPath="yes" DiskId="1"/>
+        <ServiceInstall
+                    Id="ServiceInstaller"
+                    Type="ownProcess"
+                    Vital="yes"
+                    Name="MyWindowsService"
+                    DisplayName="My Display Name"
+                    Description="A service that does very interesting things"
+                    Start="auto"
+                    Account="LocalSystem"
+                    ErrorControl="ignore"
+                    Interactive="no"
+                        />
+        <ServiceControl Id="StartService" Start="install" Stop="both" Remove="uninstall" Name="MyWindowsService" Wait="yes" />
+      </Component>
+		</ComponentGroup>
+	</Fragment>
+</Wix>
